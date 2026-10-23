@@ -5,8 +5,8 @@ Developer Dashboard のタブと欄の名前の順に並べています（参照
 アップロードするパッケージ: `/workspace/archives/dev/note-hashtag-search/store/note-hashtag-search-1.1.0.zip`
 
 拡張の名前と短い説明は、パッケージの `_locales/*/messages.json` から読み込まれます（ダッシュボードには入力欄がありません）。
-- ja: 名前「タグ新着スイッチ」／説明「note.com の検索欄に「#検索」スイッチを足し、ハッシュタグの記事を新しい順に一覧します。非公式の拡張です。」
-- en: Name "Tag Newest Switch" / Description "Adds a "#検索" switch to the note.com search box and lists hashtag posts newest first. Unofficial; not affiliated with note inc."
+- ja: 名前「#検索スイッチ for note」／説明「note.com の検索欄に「#検索」スイッチを足し、ハッシュタグの記事を新しい順に一覧します。非公式の拡張です。」
+- en: Name "#Search Switch for note" / Description "Adds a "#検索" switch to the note.com search box and lists hashtag posts newest first. Unofficial; not affiliated with note inc."
 
 ---
 

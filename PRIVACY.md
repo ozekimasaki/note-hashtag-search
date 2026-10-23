@@ -1,6 +1,6 @@
 # プライバシーポリシー / Privacy Policy
 
-対象: タグ新着スイッチ（Tag Newest Switch）　最終更新: 2026-10-23
+対象: #検索スイッチ for note（#Search Switch for note）　最終更新: 2026-10-23
 
 ## 日本語
 

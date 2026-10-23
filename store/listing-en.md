@@ -1,7 +1,7 @@
 # Chrome Web Store listing (English)
 
 ## Name
-Tag Newest Switch
+#Search Switch for note
 
 ## Short description (max 132 chars)
 Adds a "#検索" switch to the note.com search box and lists hashtag posts newest first. Unofficial; not affiliated with note inc.
