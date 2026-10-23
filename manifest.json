@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "note #検索",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "noteの検索欄に「#検索」を追加し、タグ名を新しい順で広く探します。",
   "minimum_chrome_version": "111",
   "icons": {
@@ -19,21 +19,36 @@
       "128": "icons/icon128.png"
     }
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://note.com/*", "https://www.note.com/*"],
-      "js": ["src/page.js"],
-      "css": ["src/content.css"],
-      "run_at": "document_start",
-      "type": "module",
-      "world": "MAIN"
-    },
+      "matches": [
+        "https://note.com/*",
+        "https://www.note.com/*"
+      ],
+      "js": [
+        "src/loader.js"
+      ],
+      "css": [
+        "src/content.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
     {
-      "matches": ["https://note.com/*", "https://www.note.com/*"],
-      "js": ["src/storage-bridge.js"],
-      "run_at": "document_start",
-      "type": "module"
+      "resources": [
+        "src/page.js",
+        "src/search-url.js",
+        "src/messages.js",
+        "src/storage-bridge.js"
+      ],
+      "matches": [
+        "https://note.com/*",
+        "https://www.note.com/*"
+      ]
     }
   ]
 }
