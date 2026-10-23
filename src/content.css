@@ -1,0 +1,100 @@
+/*
+ * Padding keeps typed text clear of the switch, which is positioned
+ * over the right edge of note's search field. The rule lives in the
+ * extension stylesheet so a React re-render cannot drop it.
+ */
+form[role="search"] input[type="search"],
+form[role="search"] input[name="q"],
+form[role="search"] input[aria-label="キーワードやクリエイターで検索"],
+header input[type="search"],
+input[type="search"][name="q"] {
+  padding-right: 5.75rem !important;
+}
+
+.nhs-toggle {
+  position: fixed;
+  z-index: 50;
+  transform: translate(-100%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  margin: 0;
+  padding: 0 8px 0 6px;
+  border: 1px solid var(--color-border-default, #08131a24);
+  border-radius: 999px;
+  background: var(--color-surface-normal, #fff);
+  color: var(--color-text-primary, #08131a);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  box-shadow: 0 1px 2px #08131a14;
+}
+
+.nhs-toggle[hidden] {
+  display: none !important;
+}
+
+.nhs-toggle:has(.nhs-toggle__input:focus-visible) {
+  outline: 2px solid var(--color-border-focus, #292d9e);
+  outline-offset: 2px;
+}
+
+.nhs-toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
+.nhs-toggle__track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  background: #c5ccd1;
+  transition: background-color 160ms ease;
+}
+
+.nhs-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 1px #08131a33;
+  transition: transform 160ms ease;
+}
+
+.nhs-toggle__input:checked + .nhs-toggle__track {
+  background: #2cb696;
+}
+
+.nhs-toggle__input:checked + .nhs-toggle__track .nhs-toggle__thumb {
+  transform: translateX(12px);
+}
+
+.nhs-toggle__text {
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nhs-toggle__track,
+  .nhs-toggle__thumb {
+    transition: none;
+  }
+}
