@@ -1,0 +1,4 @@
+{
+  "extName": { "message": "タグ新着スイッチ" },
+  "extDescription": { "message": "note.com の検索欄に「#検索」スイッチを足し、ハッシュタグの記事を新しい順に一覧します。非公式の拡張です。" }
+}
