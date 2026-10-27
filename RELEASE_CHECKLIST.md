@@ -14,6 +14,7 @@ Chrome ウェブストアへ 1.1.0 を出すまでの記入用ファイルです
 - [x] `npm run validate`（リリースチェック）と `npm run package`（提出用 zip）
 - [x] CI（テスト + zip 作成、タグで GitHub Release）
 - [x] note.com の実 DOM で検索欄の selector と `q=%23...&sort=new` の挙動を確認（2026-10-28）
+- [x] PR #2 を main へマージ、タグ `v1.1.0` を打って GitHub Release に zip を添付
 - [ ] Developer Dashboard での提出 ← ここから下を埋める
 
 ## 2. 必要事項の記入欄
@@ -25,10 +26,10 @@ Chrome ウェブストアへ 1.1.0 を出すまでの記入用ファイルです
 | Chrome ウェブストア開発者登録 | `<未記入: 済/未>` | 登録料 US$5 を1回だけ。18歳以上、Google アカウントは本名で登録 |
 | 開発者登録の日付 | `<未記入>` | 審査の日付管理に使う |
 | 支払った方法 | `<未記入>` | レシートは保管 |
-| main にマージ済みか | `<未記入>` | `PRIVACY.md` の URL は main に載っていないと 404 になる |
+| main にマージ済みか | 済（PR #2） | `PRIVACY.md` の URL は main に載っていないと 404 になる。いま 200 が返ることを確認済み |
 | バージョン | `1.1.0` | `manifest.json` と `package.json` と `CHANGELOG.md` が同じ値か |
-| zip の場所 | `store/dist/note-hashtag-search-1.1.0.zip` | `npm run package` で作る。git には入れない |
-| zip の SHA-256 | `<未記入>` | `npm run package` の出力を貼る |
+| zip の場所 | `store/dist/note-hashtag-search-1.1.0.zip` / GitHub Release の `v1.1.0` アセット | どちらも同じ 15 ファイル。git には入れない |
+| zip の SHA-256 | Release アセット: `3f169c358670a713fc2f702d23bf0228eb0d4ecc9e8253507412b4bca641aa2e` | CI はコミット日時を `SOURCE_DATE_EPOCH` にして作るため、手元 build とは内部タイムスタンプだけ違う。同じ値を出したいなら `SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) npm run package` |
 
 ### 2.2 ダッシュボードで選ぶ欄（推奨値が決まっているもの）
 
@@ -58,14 +59,14 @@ Chrome ウェブストアへ 1.1.0 を出すまでの記入用ファイルです
 | 提出日 | `<未記入>` |
 | 審査結果 / 日付 | `<未記入>` |
 | 公開日 | `<未記入>` |
-| GitHub Release のリンク | `<未記入>` |
+| GitHub Release のリンク | https://github.com/ozekimasaki/note-hashtag-search/releases/tag/v1.1.0 |
 | 審査で指摘されたこと | `<未記入>` |
 | インストール数の確認日 | `<未記入>` |
 
 ## 3. 提出手順
 
 ```bash
-git checkout main && git pull            # store-prep をマージ後
+git checkout main && git pull            # PR #2 はマージ済み（v1.1.0 にタグ済み）
 npm run release:check                    # validate + test + zip 作成
 unzip -l store/dist/note-hashtag-search-1.1.0.zip   # 中身を目視
 ```
