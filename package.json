@@ -1,8 +1,17 @@
 {
-  "name": "note-hash-search",
+  "name": "note-hashtag-search",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
+  "description": "note.com の検索欄に「#検索」スイッチを足す非公式 Chrome 拡張（Manifest V3、ビルド不要）",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "validate": "node scripts/validate.mjs",
+    "package": "node scripts/package-store-bundle.mjs",
+    "release:check": "npm run validate && npm test && npm run package"
   }
 }

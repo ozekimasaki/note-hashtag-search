@@ -1,22 +1,35 @@
-# note #検索
+# #検索スイッチ for note
 
 note.com の検索欄に「#検索」スイッチを足す Chrome 拡張です（Manifest V3、ビルド不要）。
 
-タグ名（`#タグ`）で検索すると、note の AI がまとめたタグページ（`/tag/...`）だけが開きます。記事の件数は少なめです。キーワードから `#` を外して検索し、URL の `q` の先頭だけ `%23` にすると、以前のタグ検索に近い一覧が新しい順で返ります。
+Chrome ウェブストア: `<未記入: ストアの URL>`（提出済みになったら [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) の 2.3 を埋めてください）
+
+## これは何をするのか
+
+note.com で `#タグ` を検索すると、いまは AI がまとめたタグページ（`/tag/...`）だけが開き、記事は少なめに出ます。
+
+キーワードから `#` を外して検索し、URL の `q` の先頭だけ `%23` にすると、以前のタグ検索に近い一覧が新しい順で返ります。
 
 ```
 https://note.com/search?q=%23AIパートナー&context=note&mode=search&sort=new
 ```
 
-この拡張は、スイッチがオンのときその URL へ直接移動します。note 自身のタグページへの遷移は、検索の送信時点で止めます。
+スイッチがオンのとき、この拡張はその URL へ直接移動します。note 自身のタグページへの遷移は、検索の送信時点で止めます。
 
-## 読み込み方（パッケージ化されていない拡張機能）
+## 入れ方
 
-1. Chrome で `chrome://extensions` を開く。
-2. 右上の「デベロッパーモード」をオンにする。
-3. 「パッケージ化されていない拡張機能を読み込む」を押す。
-4. このフォルダ（`manifest.json` がある場所）を選ぶ。
-5. note.com を開き直す。
+### Chrome ウェブストアから（公開後）
+
+ストアの URL にアクセスして「Chrome に追加」を押すだけです。
+
+### 手元で読み込む（パッケージ化されていない拡張機能）
+
+1. このリポジトリをダウンロードするか `git clone` する。
+2. Chrome で `chrome://extensions` を開く。
+3. 右上の「デベロッパーモード」をオンにする。
+4. 「パッケージ化されていない拡張機能を読み込む」を押す。
+5. `manifest.json` があるフォルダを選ぶ。
+6. note.com を開き直す。
 
 更新したあとは、拡張機能カードの再読み込みボタンを押してからページを再読み込みしてください。
 
@@ -28,47 +41,57 @@ https://note.com/search?q=%23AIパートナー&context=note&mode=search&sort=new
 2. キーワードを入れる。先頭の `#` や `＃` はあってもなくても同じです。
 3. Enter、または虫眼鏡ボタンで検索する。
 
-オンのときは、次の URL を開きます。
+オンのときは、次を開きます。
 
 `https://note.com/search?q=%23<キーワード>&context=note&mode=search&sort=new`
 
-オフのときは、note の検索のままです。スイッチの状態は `chrome.storage.local` に保存され、別のページへ移っても残ります。
+オフのときは、note の検索のままです。スイッチの状態は `chrome.storage.local` に保存され、別のページへ移っても残ります。ブラウザの中だけにあり、外へは送りません（[PRIVACY.md](PRIVACY.md)）。
 
 `/search` を開いたとき、`q` が `%23` で始まっていればスイッチはオンになります。
 
-## テスト
+## コマンド
 
-Node.js 18 以降で、このフォルダから実行します。
+依存パッケージのインストールは不要です（Node.js 18 以降）。
 
 ```bash
-node --test
+npm test            # search-url の unit test とリリースチェック
+npm run validate    # manifest・掲載文の文字数・画像・権限・リモートコードの有無
+npm run package     # ストア提出用 zip を store/dist/ に生成
+npm run release:check   # validate + test + package をまとめて
 ```
 
-`npm test` でも同じです。依存パッケージのインストールは不要です。
+## リリース
+
+提出までに埋める必要事項は [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)、ダッシュボードの各欄に貼る文章は [store/submission-form.md](store/submission-form.md) にまとめてあります。
+
+- 掲載文の下書き: [store/listing-ja.md](store/listing-ja.md) / [store/listing-en.md](store/listing-en.md)
+- 変更履歴: [CHANGELOG.md](CHANGELOG.md)
+- 名前の文言は `_locales/ja/messages.json` と `_locales/en/messages.json` にあります（ストアには入力欄がなく、ここから読まれます）
 
 ## 動作メモ
 
-2026-10-23 時点の note.com で、実際の画面にスイッチを出して確認しています。
+2026-10-28 に note.com の実 DOM で確認したところ。
 
-- デスクトップのヘッダーは `form[action="/search"][role="search"]` と `input[type="search"][name="q"]`。
-- 狭い画面では、同じ見出しの `form[role="search"]` と `input[type="text"]`（`aria-label="キーワードやクリエイターで検索"`）。
-- トップページと `/search` のどちらも、この2つのフォームだけだった。
-- `q=%23AI` の検索 URL は 200 のまま `/search` に留まる。`/hashtag/AI` は `/tag/AI` へリダイレクトする。
+- 狭い画面（`md` を下回る幅）: `form[role="search"]` と `input[type="text"][aria-label="キーワードやクリエイターで検索"]`。このころの画面には検索フォームが1つだけ描画されていた。
+- デスクトップのヘッダー: `form[action="/search"][role="search"]` と `input[type="search"][name="q"]`。
+- `q=%23AI` を入れた検索 URL は 200 のまま `/search` に留まり、入力は `#AI` の状態で再描画される。`/hashtag/AI` は `/tag/AI` へリダイレクトする。
 
-検索欄はページ遷移のたびに描き直されるため、`MutationObserver` で付け直します。入力欄が見つからないときは `input[type="search"]` やヘッダー内の検索欄へフォールバックします。
+検索欄はページ遷移のたびに描き直されるため、`MutationObserver` で付け直します。入力欄が見つからないときは `input[type="search"]` やヘッダー内の検索欄、`aria-label` へフォールバックします（`src/page.js` の `INPUT_SELECTORS`）。
+
+Manifest V3 の `content_scripts` は ES モジュールとして読み込めないため、`src/loader.js`（通常スクリプト）経由で `src/page.js` と `src/storage-bridge.js` を読み込みます。
 
 検索候補（サジェスト）のクリックは note 側の遷移のままです。スイッチが効くのは、Enter と検索ボタンによる送信です。日本語入力の変換中の Enter では検索しません。
 
 ## 注意
 
-非公式の拡張です。note株式会社とは関係ありません。note の画面や検索 URL の仕様が変わると動かなくなることがあります。
+非公式の拡張です。note株式会社とは関係ありません。「note」は note株式会社の商標です。note の画面や検索 URL の仕様が変わると動かなくなることがあります。壊れたときは issue まで。
 
 ## ライセンス
 
-MIT License（`LICENSE` を参照）
+MIT License（[LICENSE](LICENSE) を参照）
 
 ---
 
 ## English (short)
 
-Unofficial Chrome extension (Manifest V3, no build) that adds a "#検索" toggle to note.com search. When on, it opens `https://note.com/search?q=%23<keyword>&context=note&mode=search&sort=new` to list hashtag posts newest-first. Load via `chrome://extensions` → Developer mode → Load unpacked. Not affiliated with note inc. MIT License.
+Unofficial Chrome extension (Manifest V3, no build step) that adds a "#検索" toggle to the note.com search box. When the toggle is on, a search opens `https://note.com/search?q=%23<keyword>&context=note&mode=search&sort=new`, which lists hashtag posts newest first. It stores only the toggle state, locally, and makes no network requests. Not affiliated with note inc. MIT License.
