@@ -1,0 +1,75 @@
+name: release checks
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release checks
+        run: npm run validate
+      - name: Tests
+        run: npm test
+      - name: Build the Chrome Web Store package
+        run: |
+          echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
+          npm run package
+      - name: Show the package checksum
+        run: sha256sum store/dist/*.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: store-package
+          path: store/dist/*.zip
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the Chrome Web Store package
+        run: npm run package
+      - name: Check that the tag matches the manifest version
+        run: |
+          VERSION="$(node -p "require('./manifest.json').version")"
+          if [ "v${VERSION}" != "${GITHUB_REF_NAME}" ]; then
+            echo "タグ ${GITHUB_REF_NAME} と manifest の version ${VERSION} が一致しません" >&2
+            exit 1
+          fi
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ZIP="store/dist/note-hashtag-search-${VERSION}.zip"
+          CHECKSUM="$(sha256sum "$ZIP" | cut -d' ' -f1)"
+          NOTES="$(mktemp)"
+          {
+            echo "Chrome ウェブストア提出用のパッケージです。"
+            echo
+            echo "- ファイル: \`$(basename "$ZIP")\`"
+            echo "- SHA-256: \`${CHECKSUM}\`"
+            echo "- 変更点: [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CHANGELOG.md)"
+            echo
+            echo "手元で読み込む場合: \`chrome://extensions\` → デベロッパーモード → zip を解凍したフォルダを「パッケージ化されていない拡張機能を読み込む」。"
+          } > "$NOTES"
+          gh release create "${GITHUB_REF_NAME}" "$ZIP" \
+            --title "#検索スイッチ for note v${VERSION}" \
+            --notes-file "$NOTES"

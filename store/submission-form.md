@@ -2,7 +2,18 @@
 
 Developer Dashboard のタブと欄の名前の順に並べています（参照: https://developer.chrome.com/docs/webstore/cws-dashboard-listing 、 https://developer.chrome.com/docs/webstore/cws-dashboard-privacy 、 https://developer.chrome.com/docs/webstore/cws-dashboard-distribution ）。提出はまだしていません。
 
-アップロードするパッケージ: `/workspace/archives/dev/note-hashtag-search/store/note-hashtag-search-1.1.0.zip`
+アップロードするパッケージ: `store/dist/note-hashtag-search-1.1.0.zip`
+
+```bash
+npm run release:check   # validate + test + zip 生成
+sha256sum store/dist/note-hashtag-search-1.1.0.zip
+```
+
+- zip の SHA-256（提出時に記録）: `<未記入>`
+- 提出日: `<未記入>`
+- アイテム ID（公開後）: `<未記入>`
+
+その他の必要事項と提出手順は [../RELEASE_CHECKLIST.md](../RELEASE_CHECKLIST.md) に記入欄があります。zip の manifest は圧縮ファイルの最直下に置かれています（`src/` や `_locales/` と同じ階層）。
 
 拡張の名前と短い説明は、パッケージの `_locales/*/messages.json` から読み込まれます（ダッシュボードには入力欄がありません）。
 - ja: 名前「#検索スイッチ for note」／説明「note.com の検索欄に「#検索」スイッチを足し、ハッシュタグの記事を新しい順に一覧します。非公式の拡張です。」
@@ -97,7 +108,7 @@ Personally identifiable information／Health information／Financial and payment
 - I do not use or transfer user data for purposes that are unrelated to my item's single purpose
 - I do not use or transfer user data to determine creditworthiness or for lending purposes
 
-**Privacy policy URL**: `https://github.com/ozekimasaki/note-hashtag-search/blob/main/PRIVACY.md`（store-prep をマージしたあとに有効になります）
+**Privacy policy URL**: `https://github.com/ozekimasaki/note-hashtag-search/blob/main/PRIVACY.md`（このブランチが main にマージされたあとに開けることを確認してから貼る）
 
 ---
 

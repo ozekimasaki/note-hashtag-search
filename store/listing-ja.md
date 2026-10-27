@@ -34,5 +34,5 @@ note.com の検索で、ハッシュタグの記事を新しい順に一覧で�
 - プライバシーポリシーの URL: https://github.com/ozekimasaki/note-hashtag-search/blob/main/PRIVACY.md
 
 ## カテゴリと言語
-- カテゴリ: 仕事効率化（Productivity）など、めいが選ぶ
+- カテゴリ: 仕事効率化（Productivity）
 - 言語: 日本語
