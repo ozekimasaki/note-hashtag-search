@@ -9,7 +9,7 @@ npm run release:check   # validate + test + zip 生成
 sha256sum store/dist/note-hashtag-search-1.1.0.zip
 ```
 
-- zip の SHA-256（提出時に記録）: `<未記入>`
+- zip の SHA-256（GitHub Release `v1.1.0` のアセット）: `3f169c358670a713fc2f702d23bf0228eb0d4ecc9e8253507412b4bca641aa2e`
 - 提出日: `<未記入>`
 - アイテム ID（公開後）: `<未記入>`
 
